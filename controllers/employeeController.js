@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 const createEmployee = async (req, res) => {
+    console.log(req)
     try {
         const newEmployee = req.body;
 
