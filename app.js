@@ -6,6 +6,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const financialRoutes = require('./routes/financialRoutes');
 const sectionRoutes = require('./routes/sectionRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
+const taxatationRoutes = require('./routes/taxationRoutes')
 const File = require('./models/file');
 const multer = require('multer');
 const path = require('path');
@@ -20,6 +21,7 @@ app.use('/api/employees', employeeRoutes);
 app.use('/api/financials', financialRoutes);
 app.use('/api/section', sectionRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/taxations', taxatationRoutes);
 
 
 

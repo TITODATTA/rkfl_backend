@@ -7,6 +7,6 @@ const taxationSchema = new mongoose.Schema({
     taxOption: { type: Number, required: true },
 });
 
-const taxation = mongoose.model('TaxationMaster', taxationSchema);
+const Taxation = mongoose.model('TaxationMaster', taxationSchema);
 
-module.exports = taxation;
+module.exports = Taxation;
