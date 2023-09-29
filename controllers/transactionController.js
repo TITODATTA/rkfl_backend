@@ -229,6 +229,124 @@ const updateObjectStatusAndResubmission = async (req, res) => {
     }
 };
 
+const copyTransactionObjects = async (req, res) => {
+    try {
+        const { financialYear } = req.body;
+
+        // Validate the year
+        if (!financialYear) {
+            return res.status(400).json({ error: 'Year is required' });
+        }
+
+        // Find all transactions
+        const transactions = await Transaction.find();
+
+        if (!transactions || transactions.length === 0) {
+            return res.status(404).json({ error: 'No transactions found' });
+        }
+
+        // Define the criteria for copying objects
+        const criteria = {
+            investmentSchedule: 'actual',
+            financialyear: financialYear,
+        };
+
+        // Loop through all transactions and copy objects based on criteria
+        const updatedTransactions = transactions.map(transaction => {
+            const updatedSection80C = transaction.section80C.length > 0 ? transaction.section80C.map(obj => {
+                if (obj.investmentSchedule === criteria.investmentSchedule && obj.financialyear === criteria.financialyear) {
+                    // Create a duplicate of the object and update its fields
+                    const duplicatedObj = { ...obj };
+                    duplicatedObj.investmentSchedule = 'provisional';
+                    duplicatedObj.uniqueId += 1;
+                    duplicatedObj.financialyear = (parseInt(obj.financialyear) + 1).toString();
+                    duplicatedObj.file = [];
+                    duplicatedObj.policyNo = '';
+                    duplicatedObj.actualSubmission = false;
+                    return [obj, duplicatedObj];;
+                }
+                return obj;
+            }) : [];
+            const updatedSection80D = transaction.section80D.length > 0 ? transaction.section80D.map(obj => {
+                if (obj.investmentSchedule === criteria.investmentSchedule && obj.financialyear === criteria.financialyear) {
+                    // Create a duplicate of the object and update its fields
+                    const duplicatedObj = { ...obj };
+                    duplicatedObj.investmentSchedule = 'provisional';
+                    duplicatedObj.uniqueId += 1;
+                    duplicatedObj.financialyear = (parseInt(obj.financialyear) + 1).toString();
+                    duplicatedObj.file = [];
+                    duplicatedObj.policyNo = '';
+                    duplicatedObj.actualSubmission = false;
+                    return [obj, duplicatedObj];;
+                }
+                return obj;
+            }) : [];
+            const updatedSection10 = transaction.section10.length > 0 ? transaction.section10.map(obj => {
+                if (obj.investmentSchedule === criteria.investmentSchedule && obj.financialyear === criteria.financialyear) {
+                    // Create a duplicate of the object and update its fields
+                    const duplicatedObj = { ...obj };
+                    duplicatedObj.investmentSchedule = 'provisional';
+                    duplicatedObj.uniqueId += 1;
+                    duplicatedObj.financialyear = (parseInt(obj.financialyear) + 1).toString();
+                    duplicatedObj.file = [];
+                    duplicatedObj.policyNo = '';
+                    duplicatedObj.actualSubmission = false;
+                    return [obj, duplicatedObj];;
+                }
+                return obj;
+            }) : [];
+            const updatedSection24 = transaction.section24.length > 0 ? transaction.section24.map(obj => {
+                if (obj.investmentSchedule === criteria.investmentSchedule && obj.financialyear === criteria.financialyear) {
+                    // Create a duplicate of the object and update its fields
+                    const duplicatedObj = { ...obj };
+                    duplicatedObj.investmentSchedule = 'provisional';
+                    duplicatedObj.uniqueId += 1;
+                    duplicatedObj.financialyear = (parseInt(obj.financialyear) + 1).toString();
+                    duplicatedObj.file = [];
+                    duplicatedObj.policyNo = '';
+                    duplicatedObj.actualSubmission = false;
+                    return [obj, duplicatedObj];
+                }
+                return obj;
+            }) : [];
+            const updatedSection80CCD = transaction.section80CCD.length > 0 ? transaction.section80CCD.map(obj => {
+                if (obj.investmentSchedule === criteria.investmentSchedule && obj.financialyear === criteria.financialyear) {
+                    // Create a duplicate of the object and update its fields
+                    const duplicatedObj = { ...obj };
+                    duplicatedObj.investmentSchedule = 'provisional';
+                    duplicatedObj.uniqueId += 1;
+                    duplicatedObj.financialyear = (parseInt(obj.financialyear) + 1).toString();
+                    duplicatedObj.file = [];
+                    duplicatedObj.policyNo = '';
+                    duplicatedObj.actualSubmission = false;
+                    return [obj, duplicatedObj];;
+                }
+                return obj;
+            }) : [];
+
+            // Similarly, update other section arrays (e.g., section80D, section10, section24, section80CCD)
+
+            return {
+                ...transaction.toObject(),
+                section80C: updatedSection80C.flat(),
+                section80D: updatedSection80D.flat(),
+                section10: updatedSection10.flat(),
+                section24: updatedSection24.flat(),
+                section80CCD: updatedSection80CCD.flat(),
+                finalActualSubmission: false
+                // Update other section arrays here
+            };
+        });
+
+
+        // Update the records in the database
+        await Promise.all(updatedTransactions.map(transaction => Transaction.updateOne({ _id: transaction._id }, transaction)));
+
+        res.status(200).json({ message: 'Objects copied and updated successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
 
 
 
@@ -240,4 +358,5 @@ module.exports = {
     combineEmployeeArrays,
     updateTransactionObject,
     updateObjectStatusAndResubmission,
+    copyTransactionObjects
 };
