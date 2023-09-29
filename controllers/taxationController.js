@@ -7,7 +7,7 @@ const checkTaxationData = async (req, res) => {
         const { employeeCode, financialYear } = req.body;
 
         // Find the taxation record for the given employeeCode
-        const taxationRecord = await Taxation.findOne({ employeeCode });
+        const taxationRecord = await Taxation.findOne({ employeeCode, financialYear });
 
         if (!taxationRecord) {
             return res.status(200).json({ message: 'Employee not found', newEntry: true });
@@ -33,17 +33,21 @@ const createTaxationRecord = async (req, res) => {
         }
 
         // Check if a record with the same employeeCode and financialYear already exists
-        const existingRecord = await Taxation.findOne({ employeeCode, financialYear });
+        const existingRecord = await Taxation.findOne({ employeeCode });
 
         if (existingRecord) {
-            return res.status(409).json({ error: 'Record already exists for this employee and financial year' });
+            if (existingRecord.financialYear !== financialYear) {
+                const taxationRecord = new Taxation({ employeeCode, financialYear, taxOption });
+                await taxationRecord.save();
+                res.status(201).json({ message: 'Taxation record created successfully', data: taxationRecord });
+            }
+            // return res.status(409).json({ error: 'Record already exists for this employee and financial year' });
         }
-
-        // Create a new taxation record
-        const taxationRecord = new Taxation({ employeeCode, financialYear, taxOption });
-        await taxationRecord.save();
-
-        res.status(201).json({ message: 'Taxation record created successfully', data: taxationRecord });
+        else {
+            const taxationRecord = new Taxation({ employeeCode, financialYear, taxOption });
+            await taxationRecord.save();
+            res.status(201).json({ message: 'Taxation record created successfully', data: taxationRecord });
+        }
     } catch (error) {
         res.status(500).json({ error: 'An error occurred' });
     }
