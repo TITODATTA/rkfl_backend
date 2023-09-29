@@ -63,6 +63,9 @@ const loginEmployee = async (req, res) => {
             if (!employeeRole) {
                 res.json({ message: 'Successfully logged in', data: employee, role: userRole });
             }
+            else if (employeeRole.userRole === "Accountant") {
+                res.json({ message: 'Successfully logged in', data: employee, role: userRole });
+            }
             else if (employeeRole.userRole !== userRole) {
                 return res.status(400).json({ error: 'User is not an employee' });
             }
