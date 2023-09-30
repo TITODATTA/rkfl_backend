@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema({
     department: { type: String, required: true },
     designation: { type: String, required: true },
     dateOfJoining: { type: String, required: true },
-    officialEmail: { type: String, required: true },
+    offiicialEmail: { type: String, required: true },
     loginPassword: { type: String, required: true },
     phoneNumber: { type: String },
     userRole: { type: String }
