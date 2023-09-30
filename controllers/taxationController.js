@@ -53,7 +53,59 @@ const createTaxationRecord = async (req, res) => {
     }
 };
 
+
+const copyTaxationRecords = async (req, res) => {
+    try {
+        const { financialYear } = req.body;
+
+        // Validate the new financial year
+        if (!financialYear) {
+            return res.status(400).json({ error: 'Financial year is required' });
+        }
+
+        // Find all existing taxation records
+        const existingRecords = await Taxation.find();
+
+        if (!existingRecords || existingRecords.length === 0) {
+            return res.status(404).json({ error: 'No existing records found' });
+        }
+
+        const newRecords = existingRecords.map(record => ({
+            ...record.toObject(), // Convert to plain JavaScript object
+            _id: new Taxation().id, // Create a new _id
+            financialYear: financialYear
+        }));
+
+        // Insert the new copies into the database
+        const insertedRecords = await Taxation.insertMany(newRecords);
+
+        res.status(201).json({ message: 'Taxation records copied successfully', data: insertedRecords });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+        console.log(error)
+    }
+};
+
+const deleteRecordsByFinancialYear = async (req, res) => {
+    try {
+        // Define the financial year to delete (e.g., 2024)
+        const { financialYear } = req.body;
+        if (!financialYear) {
+            return res.status(400).json({ error: 'Financial year is required' });
+        }
+
+        // Find and delete records with the specified financial year
+        const deletedRecords = await Taxation.deleteMany({ financialYear: financialYear });
+
+        res.status(200).json({ message: `Deleted records for financial year ${financialYear}`, data: deletedRecords });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
 module.exports = {
     checkTaxationData,
-    createTaxationRecord
+    createTaxationRecord,
+    copyTaxationRecords,
+    deleteRecordsByFinancialYear
 };
