@@ -1,5 +1,6 @@
 // src/controllers/transactionController.js
 const Transaction = require('../models/transactionsMaster');
+const CombinedArrays = require('../models/combinedArrayMaster');
 
 const createOrUpdateTransaction = async (req, res) => {
     try {
@@ -112,6 +113,86 @@ const combineEmployeeArrays = async (req, res) => {
         res.status(500).json({ error: 'An error occurred' });
     }
 };
+const combineAllEmployeeArrays = async (req, res) => {
+    try {
+        const transactions = await Transaction.find();
+
+        // Initialize an array to store the specific data from the combined arrays
+        const combinedData = [];
+        transactions.forEach(transaction => {
+            transaction.section80C.forEach(item => {
+                combinedData.push({
+                    employeeCode: item.employeeCode,
+                    financialYear: item.financialyear,
+                    mainSection: item.mainSection,
+                    investmentCode: item.investmentCode,
+                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
+                    division: item.division, // Replace with the actual division value
+                    investment: item.investment,
+                    investmentType: item.investmentSchedule,
+                });
+            });
+            transaction.section80D.forEach(item => {
+                combinedData.push({
+                    employeeCode: item.employeeCode,
+                    financialYear: item.financialyear,
+                    mainSection: item.mainSection,
+                    investmentCode: item.investmentCode,
+                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
+                    division: item.division, // Replace with the actual division value
+                    investmentType: item.investmentSchedule,
+                });
+            });
+            transaction.section10.forEach(item => {
+                combinedData.push({
+                    employeeCode: item.employeeCode,
+                    financialYear: item.financialyear,
+                    mainSection: item.mainSection,
+                    investmentCode: item.investmentCode,
+                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
+                    division: item.division, // Replace with the actual division value
+                    investmentType: item.investmentSchedule,
+                    accommodation: item.accommodationType,
+                    cityCategory: item.cityCategory,
+                    pan: item.pan,
+                    landLoardName: item.landLoardName,
+                    landLoardAddress: item.landLoardAddress,
+
+
+                });
+            });
+            transaction.section24.forEach(item => {
+                combinedData.push({
+                    employeeCode: item.employeeCode,
+                    financialYear: item.financialyear,
+                    mainSection: item.mainSection,
+                    investmentCode: item.investmentCode,
+                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
+                    division: item.division, // Replace with the actual division value
+                    investmentType: item.investmentSchedule,
+                    property: item.propertyType,
+                    eligible80EEA: item.eligible80EEA,
+                    possession: item.possession,
+                    pan: item.pan,
+                    landLoardName: item.landLoardName,
+                    landLoardAddress: item.landLoardAddress,
+
+                });
+            });
+            // Repeat the same process for other sections (80D, 10, 24, 80CCD)
+            // ...
+
+            // Note: Adjust the "mainSection" and "division" values as needed for each section
+        });
+        // Create a new instance of CombinedArrays model and save the extracted data
+        const savedCombinedData = await CombinedArrays.insertMany(combinedData);
+
+        res.status(200).json({ message: 'Combined data extracted and saved', data: savedCombinedData });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
 
 const updateTransactionObject = async (req, res) => {
     try {
@@ -358,5 +439,6 @@ module.exports = {
     combineEmployeeArrays,
     updateTransactionObject,
     updateObjectStatusAndResubmission,
-    copyTransactionObjects
+    copyTransactionObjects,
+    combineAllEmployeeArrays
 };
