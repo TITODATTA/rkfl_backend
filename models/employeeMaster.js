@@ -12,7 +12,9 @@ const employeeSchema = new mongoose.Schema({
     offiicialEmail: { type: String, required: true },
     loginPassword: { type: String, required: true },
     phoneNumber: { type: String },
-    userRole: { type: String }
+    userRole: { type: String },
+    companyCode: { type: Number },
+    dateOfLeaving: { type: String },
 });
 
 const Employee = mongoose.model('EmployeeMaster', employeeSchema);

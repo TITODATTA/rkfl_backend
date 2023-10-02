@@ -309,6 +309,62 @@ const updateObjectStatusAndResubmission = async (req, res) => {
         res.status(500).json({ error: 'An error occurred' });
     }
 };
+const updateTransactionObjectAccepted = async (req, res) => {
+    try {
+        const { employeeCode, sectionArray, objectId } = req.body;
+
+        // Find the transaction by employee code
+        const transaction = await Transaction.findOne({ employeeCode });
+
+        if (!transaction) {
+            return res.status(404).json({ error: 'Transaction not found' });
+        }
+
+        // Determine which section array to update based on the provided sectionArray value
+        let arrayToUpdate;
+        switch (sectionArray) {
+            case 'Section 80C':
+                arrayToUpdate = transaction.section80C;
+                break;
+            case 'Section 80D':
+                arrayToUpdate = transaction.section80D;
+                break;
+            case 'Section 10':
+                arrayToUpdate = transaction.section10;
+                break;
+            case 'Section 24':
+                arrayToUpdate = transaction.section24;
+                break;
+            case 'Section 80CCD':
+                arrayToUpdate = transaction.section80CCD;
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid sectionArray value' });
+        }
+
+        // Find the object within the selected section array by object ID
+        const objectToUpdate = arrayToUpdate.find(obj => obj.uniqueId.toString() === objectId);
+
+        if (!objectToUpdate) {
+            return res.status(404).json({ error: 'Object not found in the selected section array' });
+        }
+
+        const updatedObject = {
+            ...objectToUpdate,
+            status: 'Accept',
+        };
+
+        // Push the updated object back to the section array
+        arrayToUpdate[arrayToUpdate.indexOf(objectToUpdate)] = updatedObject;
+
+        // Save the updated transaction
+        await transaction.save();
+
+        res.status(200).json({ message: 'Object Accepted Successfully', data: objectToUpdate });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
 
 const copyTransactionObjects = async (req, res) => {
     try {
@@ -344,6 +400,7 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.file = [];
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
+                    duplicatedObj.status = '';
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -358,6 +415,7 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.file = [];
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
+                    duplicatedObj.status = '';
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -372,6 +430,7 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.file = [];
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
+                    duplicatedObj.status = '';
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -386,6 +445,7 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.file = [];
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
+                    duplicatedObj.status = '';
                     return [obj, duplicatedObj];
                 }
                 return obj;
@@ -400,6 +460,7 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.file = [];
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
+                    duplicatedObj.status = '';
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -440,5 +501,6 @@ module.exports = {
     updateTransactionObject,
     updateObjectStatusAndResubmission,
     copyTransactionObjects,
-    combineAllEmployeeArrays
+    combineAllEmployeeArrays,
+    updateTransactionObjectAccepted,
 };
