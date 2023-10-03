@@ -18,6 +18,7 @@ const combinedArraysSchema = new mongoose.Schema({
     property: { type: String },
     eligible80EEA: { type: String },
     possession: { type: String },
+    status: { type: String },
 });
 
 const CombinedArrays = mongoose.model('CombinedArrays', combinedArraysSchema);

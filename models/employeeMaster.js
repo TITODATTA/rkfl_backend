@@ -14,7 +14,8 @@ const employeeSchema = new mongoose.Schema({
     phoneNumber: { type: String },
     userRole: { type: String },
     companyCode: { type: Number },
-    dateOfLeaving: { type: String },
+    acctRolePlant: { type: String },
+    dateOfLeaving: { type: String, default: "00.00.0000" },
 });
 
 const Employee = mongoose.model('EmployeeMaster', employeeSchema);

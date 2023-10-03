@@ -126,10 +126,9 @@ const combineAllEmployeeArrays = async (req, res) => {
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investmentCode: item.investmentCode,
-                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
-                    division: item.division, // Replace with the actual division value
                     investment: item.investment,
                     investmentType: item.investmentSchedule,
+                    status: item.status || ""
                 });
             });
             transaction.section80D.forEach(item => {
@@ -137,10 +136,11 @@ const combineAllEmployeeArrays = async (req, res) => {
                     employeeCode: item.employeeCode,
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
-                    investmentCode: item.investmentCode,
-                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
+                    investment: item.investment,
+                    subSectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
                     division: item.division, // Replace with the actual division value
                     investmentType: item.investmentSchedule,
+                    status: item.status || ""
                 });
             });
             transaction.section10.forEach(item => {
@@ -148,15 +148,17 @@ const combineAllEmployeeArrays = async (req, res) => {
                     employeeCode: item.employeeCode,
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
-                    investmentCode: item.investmentCode,
-                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
-                    division: item.division, // Replace with the actual division value
+                    investment: item.investment,
                     investmentType: item.investmentSchedule,
                     accommodation: item.accommodationType,
                     cityCategory: item.cityCategory,
                     pan: item.pan,
                     landLoardName: item.landLoardName,
-                    landLoardAddress: item.landLoardAddress,
+                    landLoardAddress: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress,
+                    landLoardAddress1: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "",
+                    landLoardAddress2: item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "",
+                    status: item.status || "",
+
 
 
                 });
@@ -166,16 +168,17 @@ const combineAllEmployeeArrays = async (req, res) => {
                     employeeCode: item.employeeCode,
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
-                    investmentCode: item.investmentCode,
-                    subsectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
-                    division: item.division, // Replace with the actual division value
+                    investment: item.investment,
                     investmentType: item.investmentSchedule,
                     property: item.propertyType,
                     eligible80EEA: item.eligible80EEA,
                     possession: item.possession,
                     pan: item.pan,
                     landLoardName: item.landLoardName,
-                    landLoardAddress: item.landLoardAddress,
+                    landLoardAddress: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(0, 75) : item.landLoardAddress,
+                    landLoardAddress1: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(75, 75 + 35) : "",
+                    landLoardAddress2: item.landLoardAddress.length > 75 + 35 ? item.landLoardAddress.slice(75 + 35) : "",
+                    status: item.status || ""
 
                 });
             });
@@ -479,8 +482,6 @@ const copyTransactionObjects = async (req, res) => {
                 // Update other section arrays here
             };
         });
-
-
         // Update the records in the database
         await Promise.all(updatedTransactions.map(transaction => Transaction.updateOne({ _id: transaction._id }, transaction)));
 
@@ -489,9 +490,6 @@ const copyTransactionObjects = async (req, res) => {
         res.status(500).json({ error: 'An error occurred' });
     }
 };
-
-
-
 
 module.exports = {
     createOrUpdateTransaction,

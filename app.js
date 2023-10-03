@@ -40,8 +40,11 @@ const upload = multer({ storage });
 app.post('/upload', upload.single('file'), async (req, res) => {
     try {
         const { filename, path } = req.file;
+        const existingFile = await File.findOne({ filename });
 
-        // Save file information to MongoDB
+        if (existingFile) {
+            return res.status(400).json({ error: 'File with the same filename already exists' });
+        }
         const file = new File({
             filename,
             filepath: path,
@@ -95,7 +98,6 @@ app.delete('/file/:id', async (req, res) => {
         res.status(500).send('Error deleting file');
     }
 });
-
 
 
 
