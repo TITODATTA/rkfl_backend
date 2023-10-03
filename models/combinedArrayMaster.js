@@ -9,7 +9,6 @@ const combinedArraysSchema = new mongoose.Schema({
     subSectionCode: { type: String },
     division: { type: String },
     investment: { type: String },
-    investmentType: { type: String },
     accommodation: { type: String },
     cityCategory: { type: String },
     pan: { type: String },
@@ -20,6 +19,7 @@ const combinedArraysSchema = new mongoose.Schema({
     property: { type: String },
     eligible80EEA: { type: String },
     possession: { type: String },
+    investmentType: { type: String },
     status: { type: String },
 });
 

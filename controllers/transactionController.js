@@ -158,9 +158,6 @@ const combineAllEmployeeArrays = async (req, res) => {
                     landLoardAddress2: item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "",
                     investmentType: item.investmentSchedule,
                     status: item.status || "",
-
-
-
                 });
             });
             transaction.section24.forEach(item => {
