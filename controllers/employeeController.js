@@ -117,9 +117,21 @@ const createRole = async (req, res) => {
     }
 };
 
+const deleteAllDocumentsEmployee = async (req, res) => {
+    try {
+        // Delete all documents in the collection
+        await Employee.deleteMany({});
+
+        res.status(200).json({ message: 'All documents deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
 
 module.exports = {
     createEmployee,
     loginEmployee,
-    createRole
+    createRole,
+    deleteAllDocumentsEmployee
 };
