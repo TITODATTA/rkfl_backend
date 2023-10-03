@@ -120,17 +120,30 @@ const combineAllEmployeeArrays = async (req, res) => {
         // Initialize an array to store the specific data from the combined arrays
         const combinedData = [];
         transactions.forEach(transaction => {
+            const combinedMap = new Map();
             transaction.section80C.forEach(item => {
-                combinedData.push({
-                    employeeCode: item.employeeCode,
-                    financialYear: item.financialyear,
-                    mainSection: item.mainSection,
-                    investmentCode: item.investmentCode,
-                    investment: item.investment,
-                    investmentType: item.investmentSchedule,
-                    status: item.status || ""
-                });
+                const key = `${item.employeeCode}-${item.investmentCode}`;
+                if (combinedMap.has(key)) {
+                    // Add the investment to the existing entry
+                    const existingEntry = combinedMap.get(key);
+                    existingEntry.investment = (
+                        parseInt(existingEntry.investment) + parseInt(item.investment)
+                    ).toString();
+                } else {
+                    // Create a new entry
+                    combinedMap.set(key, {
+                        employeeCode: item.employeeCode,
+                        financialYear: item.financialyear,
+                        mainSection: item.mainSection,
+                        investmentCode: item.investmentCode,
+                        investment: item.investment,
+                        investmentType: item.investmentSchedule,
+                        status: item.status || "",
+                    });
+                }
+
             });
+            combinedData.push(...combinedMap.values());
             transaction.section80D.forEach(item => {
                 combinedData.push({
                     employeeCode: item.employeeCode,
