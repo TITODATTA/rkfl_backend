@@ -149,7 +149,6 @@ const combineAllEmployeeArrays = async (req, res) => {
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
-                    investmentType: item.investmentSchedule,
                     accommodation: item.accommodationType,
                     cityCategory: item.cityCategory,
                     pan: item.pan,
@@ -157,6 +156,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     landLoardAddress: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress,
                     landLoardAddress1: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "",
                     landLoardAddress2: item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "",
+                    investmentType: item.investmentSchedule,
                     status: item.status || "",
 
 
@@ -169,7 +169,6 @@ const combineAllEmployeeArrays = async (req, res) => {
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
-                    investmentType: item.investmentSchedule,
                     property: item.propertyType,
                     eligible80EEA: item.eligible80EEA,
                     possession: item.possession,
@@ -178,6 +177,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     landLoardAddress: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(0, 75) : item.landLoardAddress,
                     landLoardAddress1: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(75, 75 + 35) : "",
                     landLoardAddress2: item.landLoardAddress.length > 75 + 35 ? item.landLoardAddress.slice(75 + 35) : "",
+                    investmentType: item.investmentSchedule,
                     status: item.status || ""
 
                 });

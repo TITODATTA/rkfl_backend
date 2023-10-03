@@ -15,6 +15,8 @@ const combinedArraysSchema = new mongoose.Schema({
     pan: { type: String },
     landLoardName: { type: String },
     landLoardAddress: { type: String },
+    landLoardAddress1: { type: String },
+    landLoardAddress2: { type: String },
     property: { type: String },
     eligible80EEA: { type: String },
     possession: { type: String },
