@@ -66,6 +66,9 @@ const loginEmployee = async (req, res) => {
             else if (employeeRole.userRole === "Accountant") {
                 res.json({ message: 'Successfully logged in', data: employee, role: userRole });
             }
+            else if (employeeRole.userRole === "Administrator") {
+                res.json({ message: 'Successfully logged in', data: employee, role: userRole });
+            }
             else if (employeeRole.userRole !== userRole) {
                 return res.status(400).json({ error: 'User is not an employee' });
             }
@@ -119,9 +122,12 @@ const createRole = async (req, res) => {
 
 const deleteAllDocumentsEmployee = async (req, res) => {
     try {
-        // Delete all documents in the collection
-        await Employee.deleteMany({});
+        const employeeToKeep = await Employee.findOne({ employeeId: 191272 });
 
+        if (!employeeToKeep) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+        await Employee.deleteMany({ _id: { $ne: employeeToKeep._id } });
         res.status(200).json({ message: 'All documents deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred' });

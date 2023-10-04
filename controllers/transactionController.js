@@ -121,6 +121,7 @@ const combineAllEmployeeArrays = async (req, res) => {
         const combinedData = [];
         transactions.forEach(transaction => {
             const combinedMap = new Map();
+            const combinedMap2 = new Map();
             transaction.section80C.forEach(item => {
                 const key = `${item.employeeCode}-${item.investmentCode}`;
                 if (combinedMap.has(key)) {
@@ -144,18 +145,31 @@ const combineAllEmployeeArrays = async (req, res) => {
 
             });
             combinedData.push(...combinedMap.values());
+
             transaction.section80D.forEach(item => {
-                combinedData.push({
-                    employeeCode: item.employeeCode,
-                    financialYear: item.financialyear,
-                    mainSection: item.mainSection,
-                    investment: item.investment,
-                    subSectionCode: item.subSectionCode, // Assuming subsectionCode is available in the item
-                    division: item.division, // Replace with the actual division value
-                    investmentType: item.investmentSchedule,
-                    status: item.status || ""
-                });
+                const key = `${item.employeeCode}-${item.subSectionCode}-${item.division}`;
+                if (combinedMap2.has(key)) {
+                    // Add the investment to the existing entry
+                    const existingEntry = combinedMap2.get(key);
+                    existingEntry.investment = (
+                        parseInt(existingEntry.investment) + parseInt(item.investment)
+                    ).toString();
+                } else {
+                    // Create a new entry
+                    combinedMap2.set(key, {
+                        employeeCode: item.employeeCode,
+                        financialYear: item.financialyear,
+                        mainSection: item.mainSection,
+                        subSectionCode: item.subSectionCode,
+                        division: item.division,
+                        investment: item.investment,
+                        investmentType: item.investmentSchedule,
+                        status: item.status || "",
+                    });
+                }
             });
+            combinedData.push(...combinedMap2.values());
+
             transaction.section10.forEach(item => {
                 combinedData.push({
                     employeeCode: item.employeeCode,
