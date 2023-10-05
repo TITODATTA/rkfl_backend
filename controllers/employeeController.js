@@ -122,7 +122,7 @@ const createRole = async (req, res) => {
 
 const deleteAllDocumentsEmployee = async (req, res) => {
     try {
-        const employeeToKeep = await Employee.findOne({ employeeId: 191272 });
+        const employeeToKeep = await Employee.findOne({ employeeCode: 191272 });
 
         if (!employeeToKeep) {
             return res.status(404).json({ message: 'Employee not found' });
