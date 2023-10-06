@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 
 const combinedArraysSchema = new mongoose.Schema({
     employeeCode: { type: Number },
+    startDate: { type: String },
+    endDate: { type: String },
     financialYear: { type: String },
     mainSection: { type: String },
     investmentCode: { type: String },

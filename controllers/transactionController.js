@@ -173,6 +173,8 @@ const combineAllEmployeeArrays = async (req, res) => {
             transaction.section10.forEach(item => {
                 combinedData.push({
                     employeeCode: item.employeeCode,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
