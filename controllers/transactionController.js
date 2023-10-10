@@ -138,6 +138,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                         mainSection: item.mainSection,
                         investmentCode: item.investmentCode,
                         investment: item.investment,
+                        adjustedInvestment: item.adjustedInvestment,
                         investmentType: item.investmentSchedule,
                         status: item.status || "",
                     });
@@ -163,6 +164,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                         subSectionCode: item.subSectionCode,
                         division: item.division,
                         investment: item.investment,
+                        adjustedInvestment: item.adjustedInvestment,
                         investmentType: item.investmentSchedule,
                         status: item.status || "",
                     });
@@ -178,6 +180,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
+                    adjustedInvestment: item.adjustedInvestment,
                     accommodation: item.accommodationType,
                     cityCategory: item.cityCategory,
                     pan: item.pan,
@@ -195,6 +198,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
+                    adjustedInvestment: item.adjustedInvestment,
                     property: item.propertyType,
                     eligible80EEA: item.eligible80EEA,
                     possession: item.possession,
@@ -340,7 +344,7 @@ const updateObjectStatusAndResubmission = async (req, res) => {
 };
 const updateTransactionObjectAccepted = async (req, res) => {
     try {
-        const { employeeCode, sectionArray, objectId } = req.body;
+        const { employeeCode, sectionArray, objectId, adjustedInvestment, adjustedComments } = req.body;
 
         // Find the transaction by employee code
         const transaction = await Transaction.findOne({ employeeCode });
@@ -378,9 +382,12 @@ const updateTransactionObjectAccepted = async (req, res) => {
             return res.status(404).json({ error: 'Object not found in the selected section array' });
         }
 
+
         const updatedObject = {
             ...objectToUpdate,
             status: 'Accept',
+            adjustedInvestment: adjustedInvestment,
+            adjustedComments: adjustedComments || "",
         };
 
         // Push the updated object back to the section array
@@ -430,6 +437,10 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
+                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('adjustedComments')) {
+                        delete duplicatedObj.adjustedComments
+                    }
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -445,6 +456,10 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
+                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('adjustedComments')) {
+                        delete duplicatedObj.adjustedComments
+                    }
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -460,6 +475,10 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
+                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('adjustedComments')) {
+                        delete duplicatedObj.adjustedComments
+                    }
                     return [obj, duplicatedObj];;
                 }
                 return obj;
@@ -475,6 +494,10 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
+                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('adjustedComments')) {
+                        delete duplicatedObj.adjustedComments
+                    }
                     return [obj, duplicatedObj];
                 }
                 return obj;
@@ -490,6 +513,10 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
+                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('adjustedComments')) {
+                        delete duplicatedObj.adjustedComments
+                    }
                     return [obj, duplicatedObj];;
                 }
                 return obj;

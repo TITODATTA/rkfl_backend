@@ -11,6 +11,7 @@ const combinedArraysSchema = new mongoose.Schema({
     subSectionCode: { type: String },
     division: { type: String },
     investment: { type: String },
+    adjustedInvestment: { type: String },
     accommodation: { type: String },
     cityCategory: { type: String },
     pan: { type: String },

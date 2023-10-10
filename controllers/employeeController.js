@@ -1,6 +1,7 @@
 // src/controllers/employeeController.js
 const Employee = require('../models/employeeMaster');
 const Role = require('../models/role');
+const Transaction = require('../models/transactionsMaster');
 const jwt = require('jsonwebtoken');
 
 
@@ -134,10 +135,38 @@ const deleteAllDocumentsEmployee = async (req, res) => {
     }
 };
 
+const updateTransactionPlantFromEmployee = async (req, res) => {
+    try {
+        // Fetch all employee records
+        const employees = await Employee.find({}, 'employeeCode plant');
+
+        // Iterate through each employee
+        for (const employee of employees) {
+            // Find the corresponding transaction, if exists, by employeeCode
+            const transaction = await Transaction.findOne({ employeeCode: employee.employeeCode });
+
+            if (transaction) {
+                // Check if the plant in the transaction matches the employee's plant
+                if (transaction.plant !== employee.plant) {
+                    // Update the plant in the transaction model
+                    transaction.plant = employee.plant;
+                    await transaction.save();
+                }
+            }
+        }
+
+        res.status(200).json({ message: 'Transaction plants updated successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+
 
 module.exports = {
     createEmployee,
     loginEmployee,
     createRole,
-    deleteAllDocumentsEmployee
+    deleteAllDocumentsEmployee,
+    updateTransactionPlantFromEmployee
 };

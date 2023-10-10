@@ -89,7 +89,7 @@ const copyTaxationRecords = async (req, res) => {
 const deleteRecordsByFinancialYear = async (req, res) => {
     try {
         // Define the financial year to delete (e.g., 2024)
-        const { financialYear } = req.body;
+        const { financialYear } = req.query;
         if (!financialYear) {
             return res.status(400).json({ error: 'Financial year is required' });
         }
