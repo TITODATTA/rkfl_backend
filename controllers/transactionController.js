@@ -422,6 +422,7 @@ const copyTransactionObjects = async (req, res) => {
         const criteria = {
             investmentSchedule: 'actual',
             financialyear: financialYear,
+            status: 'Accept'
         };
 
         // Loop through all transactions and copy objects based on criteria
