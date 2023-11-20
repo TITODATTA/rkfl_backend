@@ -123,7 +123,7 @@ const combineAllEmployeeArrays = async (req, res) => {
             const combinedMap = new Map();
             const combinedMap2 = new Map();
             transaction.section80C.forEach(item => {
-                const key = `${item.employeeCode}-${item.investmentCode}-${item.investmentSchedule}`;
+                const key = `${item.employeeCode}-${item.investmentCode}-${item.investmentSchedule}-${item.financialyear}`;
                 if (combinedMap.has(key)) {
                     // Add the investment to the existing entry
                     const existingEntry = combinedMap.get(key);
@@ -148,7 +148,7 @@ const combineAllEmployeeArrays = async (req, res) => {
             combinedData.push(...combinedMap.values());
 
             transaction.section80D.forEach(item => {
-                const key = `${item.employeeCode}-${item.subSectionCode}-${item.division}-${item.investmentSchedule}`;
+                const key = `${item.employeeCode}-${item.subSectionCode}-${item.division}-${item.investmentSchedule}-${item.financialyear}`;
                 if (combinedMap2.has(key)) {
                     // Add the investment to the existing entry
                     const existingEntry = combinedMap2.get(key);
@@ -438,7 +438,9 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
-                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('resubmissionCounter')) {
+                        delete duplicatedObj.resubmissionCounter
+                    }
                     if (duplicatedObj.hasOwnProperty('adjustedComments')) {
                         delete duplicatedObj.adjustedComments
                     }
@@ -457,7 +459,9 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
-                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('resubmissionCounter')) {
+                        delete duplicatedObj.resubmissionCounter
+                    }
                     if (duplicatedObj.hasOwnProperty('adjustedComments')) {
                         delete duplicatedObj.adjustedComments
                     }
@@ -476,7 +480,9 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
-                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('resubmissionCounter')) {
+                        delete duplicatedObj.resubmissionCounter
+                    }
                     if (duplicatedObj.hasOwnProperty('adjustedComments')) {
                         delete duplicatedObj.adjustedComments
                     }
@@ -495,7 +501,9 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
-                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('resubmissionCounter')) {
+                        delete duplicatedObj.resubmissionCounter
+                    }
                     if (duplicatedObj.hasOwnProperty('adjustedComments')) {
                         delete duplicatedObj.adjustedComments
                     }
@@ -514,7 +522,9 @@ const copyTransactionObjects = async (req, res) => {
                     duplicatedObj.policyNo = '';
                     duplicatedObj.actualSubmission = false;
                     duplicatedObj.status = '';
-                    delete duplicatedObj.adjustedInvestment
+                    if (duplicatedObj.hasOwnProperty('resubmissionCounter')) {
+                        delete duplicatedObj.resubmissionCounter
+                    }
                     if (duplicatedObj.hasOwnProperty('adjustedComments')) {
                         delete duplicatedObj.adjustedComments
                     }
