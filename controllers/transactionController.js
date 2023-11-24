@@ -200,6 +200,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     investment: item.investment,
                     adjustedInvestment: item.adjustedInvestment,
                     property: item.propertyType,
+                    lenderType: item.lenderType,
                     eligible80EEA: item.eligible80EEA,
                     possession: item.possession,
                     pan: item.pan,
