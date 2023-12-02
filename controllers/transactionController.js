@@ -127,8 +127,8 @@ const combineAllEmployeeArrays = async (req, res) => {
                 if (combinedMap.has(key)) {
                     // Add the investment to the existing entry
                     const existingEntry = combinedMap.get(key);
-                    existingEntry.investment = (
-                        parseInt(existingEntry.investment) + parseInt(item.investment)
+                    existingEntry.adjustedInvestment = (
+                        parseInt(existingEntry.adjustedInvestment) + parseInt(item.adjustedInvestment)
                     ).toString();
                 } else {
                     // Create a new entry
@@ -152,8 +152,8 @@ const combineAllEmployeeArrays = async (req, res) => {
                 if (combinedMap2.has(key)) {
                     // Add the investment to the existing entry
                     const existingEntry = combinedMap2.get(key);
-                    existingEntry.investment = (
-                        parseInt(existingEntry.investment) + parseInt(item.investment)
+                    existingEntry.adjustedInvestment = (
+                        parseInt(existingEntry.adjustedInvestment) + parseInt(item.adjustedInvestment)
                     ).toString();
                 } else {
                     // Create a new entry
