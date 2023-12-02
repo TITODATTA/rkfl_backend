@@ -176,6 +176,7 @@ const combineAllEmployeeArrays = async (req, res) => {
                     employeeCode: item.employeeCode,
                     startDate: item.startDate,
                     endDate: item.endDate,
+                    subSectionCode: item.subSectionCode,
                     financialYear: item.financialyear,
                     mainSection: item.mainSection,
                     investment: item.investment,
