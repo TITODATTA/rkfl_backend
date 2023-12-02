@@ -171,7 +171,6 @@ const combineAllEmployeeArrays = async (req, res) => {
                 }
             });
             combinedData.push(...combinedMap2.values());
-
             transaction.section10.forEach(item => {
                 combinedData.push({
                     employeeCode: item.employeeCode,
@@ -185,9 +184,9 @@ const combineAllEmployeeArrays = async (req, res) => {
                     cityCategory: item.cityCategory,
                     pan: item.pan,
                     landLoardName: item.landLoardName,
-                    landLoardAddress: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress,
-                    landLoardAddress1: item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "",
-                    landLoardAddress2: item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "",
+                    landLoardAddress: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress) : "",
+                    landLoardAddress1: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "") : "",
+                    landLoardAddress2: item.landLoardAddress ? (item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "") : "",
                     investmentType: item.investmentSchedule,
                     status: item.status || "",
                 });
@@ -205,9 +204,9 @@ const combineAllEmployeeArrays = async (req, res) => {
                     possession: item.possession,
                     pan: item.pan,
                     landLoardName: item.landLoardName,
-                    landLoardAddress: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(0, 75) : item.landLoardAddress,
-                    landLoardAddress1: item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(75, 75 + 35) : "",
-                    landLoardAddress2: item.landLoardAddress.length > 75 + 35 ? item.landLoardAddress.slice(75 + 35) : "",
+                    landLoardAddress: item.landLoardAddress ? (item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(0, 75) : item.landLoardAddress) : "",
+                    landLoardAddress1: item.landLoardAddress ? (item.landLoardAddress.length > 75 ? item.landLoardAddress.slice(75, 75 + 35) : "") : "",
+                    landLoardAddress2: item.landLoardAddress ? (item.landLoardAddress.length > 75 + 35 ? item.landLoardAddress.slice(75 + 35) : "") : "",
                     investmentType: item.investmentSchedule,
                     status: item.status || ""
 
@@ -219,6 +218,7 @@ const combineAllEmployeeArrays = async (req, res) => {
             // Note: Adjust the "mainSection" and "division" values as needed for each section
         });
         // Create a new instance of CombinedArrays model and save the extracted data
+
         const savedCombinedData = await CombinedArrays.insertMany(combinedData);
 
         res.status(200).json({ message: 'Combined data extracted and saved', data: savedCombinedData });
