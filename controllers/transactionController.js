@@ -172,25 +172,45 @@ const combineAllEmployeeArrays = async (req, res) => {
             });
             combinedData.push(...combinedMap2.values());
             transaction.section10.forEach(item => {
-                combinedData.push({
-                    employeeCode: item.employeeCode,
-                    startDate: item.startDate,
-                    endDate: item.endDate,
-                    subSectionCode: item.subSectionCode,
-                    financialYear: item.financialyear,
-                    mainSection: item.mainSection,
-                    investment: item.investment,
-                    adjustedInvestment: item.adjustedInvestment,
-                    accommodation: item.accommodationType,
-                    cityCategory: item.cityCategory,
-                    pan: item.pan,
-                    landLoardName: item.landLoardName,
-                    landLoardAddress: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress) : "",
-                    landLoardAddress1: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "") : "",
-                    landLoardAddress2: item.landLoardAddress ? (item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "") : "",
-                    investmentType: item.investmentSchedule,
-                    status: item.status || "",
-                });
+                if (item.subSectionCode === "13A") {
+                    combinedData.push({
+                        employeeCode: item.employeeCode,
+                        startDate: item.startDate,
+                        endDate: item.endDate,
+                        subSectionCode: item.subSectionCode,
+                        financialYear: item.financialyear,
+                        mainSection: item.mainSection,
+                        investment: item.investment,
+                        adjustedInvestment: item.adjustedInvestment,
+                        accommodation: item.accommodationType,
+                        cityCategory: item.cityCategory,
+                        pan: item.pan,
+                        landLoardName: item.landLoardName,
+                        landLoardAddress: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(0, 35) : item.landLoardAddress) : "",
+                        landLoardAddress1: item.landLoardAddress ? (item.landLoardAddress.length > 35 ? item.landLoardAddress.slice(35, 35 + 35) : "") : "",
+                        landLoardAddress2: item.landLoardAddress ? (item.landLoardAddress.length > 35 + 35 ? item.landLoardAddress.slice(35 + 35) : "") : "",
+                        investmentType: item.investmentSchedule,
+                        status: item.status || "",
+                    });
+                }
+                else {
+                    combinedData.push({
+                        employeeCode: item.employeeCode,
+                        startDate: item.startDate,
+                        endDate: item.endDate,
+                        subSectionCode: item.subSectionCode,
+                        financialYear: item.financialyear,
+                        mainSection: item.mainSection,
+                        investment: item.investment,
+                        firstName: item.firstName,
+                        lastName: item.lastName,
+                        gender: item.gender,
+                        dob: item.dob,
+                        childAllowance: item.childAllowance,
+                        investmentType: item.investmentSchedule,
+                        status: item.status || "",
+                    });
+                }
             });
             transaction.section24.forEach(item => {
                 combinedData.push({
